@@ -3,16 +3,20 @@ const { App } = require("@slack/bolt");
 require("dotenv").config();
 
 const TRELLO_KEY = process.env.TRELLO_KEY;
+console.log(TRELLO_KEY);
 const TRELLO_TOKEN = process.env.TRELLO_TOKEN;
-
+console.log(TRELLO_TOKEN);
 const app = new App({
   token: process.env.SLACK_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
+console.log(app);
 
 var trello = new Trello(TRELLO_KEY, TRELLO_TOKEN);
+console.log(trello);
 
 app.message(":trello:ADD", async ({ message, say }) => {
+  console.log("detected");
   const cardTitle = message.text.split('-t "')[1].split('"')[0];
   const cardDescription = message.text.split('-d "')[1].split('"')[0];
   trello.addCard(
