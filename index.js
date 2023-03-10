@@ -35,7 +35,7 @@ app.message(":trello:ADD", async ({ message, say }) => {
 });
 
 (async () => {
-  await app.start(process.env.PORT || 3000);
-
+  await app.start(process.env.PORT);
+  console.log(process.env.PORT);
   console.log("⚡️ Bolt app is running!");
 })();
