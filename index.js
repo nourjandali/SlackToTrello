@@ -1,35 +1,55 @@
-const Trello = require("trello");
-const { App } = require("@slack/bolt");
-require("dotenv").config();
+const { App } = require('@slack/bolt');
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
+const trello = require('./trello.js');
+require('dotenv').config();
 
-const TRELLO_KEY = process.env.TRELLO_KEY;
-const TRELLO_TOKEN = process.env.TRELLO_TOKEN;
 const app = new App({
-  token: process.env.SLACK_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  token: process.env.SLACK_BOT_TOKEN,
+  signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
-var trello = new Trello(TRELLO_KEY, TRELLO_TOKEN);
+const addCommand = require('./cmd/add.js');
 
-app.message(":trello:ADD", async ({ message, say }) => {
-  const cardTitle = message.text.split('-t "')[1].split('"')[0];
-  const cardDescription = message.text.split('-d "')[1].split('"')[0];
-  trello.addCard(
-    cardTitle,
-    cardDescription,
-    "640ba599d219c4002fcf3117",
-    function (error, trelloCard) {
-      if (error) {
-        console.log("Could not add card:", error);
-      } else {
-        console.log("Added card:", trelloCard);
-      }
-    }
-  );
-  await say(`Card "${cardTitle}" created!`);
-});
+const argv = yargs(hideBin(process.argv))
+  .command(addCommand)
+  .demandCommand()
+  .help()
+  .argv;
 
 (async () => {
   await app.start(process.env.PORT || 3000);
   console.log(`⚡️ Bolt app is running on port: ${process.env.PORT}`);
 })();
+
+process.on('unhandledRejection', (error) => {
+  console.error('Unhandled Promise Rejection:', error);
+});
+
+app.error((error) => {
+  console.error('Slack app error:', error);
+});
+
+app.message(async ({ message }) => {
+  console.log(`Received message: ${message.text}`);
+});
+
+app.use(async ({ context }, next) => {
+  context.trello = trello;
+  await next();
+});
+
+// Handle Trello API errors
+app.use(async ({ error, context, next }) => {
+  if (error) {
+    console.error(`Trello API error: ${error.message}`);
+    await context.say(`Trello Error: ${error.message}`);
+  } else {
+    await next();
+  }
+});
+
+// Handle unknown commands
+app.command('*', async ({ command, context }) => {
+  await context.say(`Sorry, I don't know the command \`${command.text}\`. Type \`help\` to see the list of available commands.`);
+});
