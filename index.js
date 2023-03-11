@@ -9,15 +9,14 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
-const addCommand = require('./cmd/add.js');
-const removeCommand = require('./cmd/remove.js');
+const commands = [
+  require('./cmd/add.js'),
+  require('./cmd/remove.js')
+];
 
-const argv = yargs(hideBin(process.argv))
-  .command(addCommand)
-  .command(removeCommand)
-  .demandCommand()
-  .help()
-  .argv;
+for (const command of commands) {
+  app.command(command);
+}
 
 (async () => {
   await app.start(process.env.PORT || 3000);

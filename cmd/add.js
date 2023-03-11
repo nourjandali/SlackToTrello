@@ -1,4 +1,4 @@
-const trello = require('./trello.js.js.js');
+const trello = require('./trello.js');
 
 module.exports = {
   command: ":trello:ADD",
@@ -17,11 +17,10 @@ module.exports = {
       demandOption: true,
     });
   },
-  handler: async (argv, { say }) => {
+  handler: async ({ title, description }, { say }) => {
     try {
-      const { title, description } = argv;
       await trello.addCard(title, description, "640ba599d219c4002fcf3117");
-      await say(`Card "${title}" created!`);
+      await say(`Card entitled "${title}" created`);
     } catch (error) {
       console.error("Could not add card:", error);
       await say("Could not add card.");
