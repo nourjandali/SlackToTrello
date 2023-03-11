@@ -12,9 +12,10 @@ This repository contains code for a Slack bot that can add Trello cards directly
 - Install the required dependencies using npm install.
 - Rename the .env.example file to .env and fill in the required environment variables with your Trello and Slack API credentials.
 
-Trello API: ![TrelloAPI](https://user-images.githubusercontent.com/31695466/224453023-3e85c3f5-886b-4698-a1ff-ef0fadce855e.JPG)
+Trello API: ![Trello](https://user-images.githubusercontent.com/44416281/224477477-94947815-1391-464e-82e6-c55044ccb8a6.jpeg)
 
-Slack API: ![SlackToken](https://user-images.githubusercontent.com/31695466/224452222-057499df-553e-4cd5-8d22-33f06a2c090f.JPG)
+
+Slack API: ![Slack](https://user-images.githubusercontent.com/44416281/224477487-34f9769b-7809-4a91-886b-78a1769e9647.jpeg)
 
 - Add Scopes in OAuth.
 
