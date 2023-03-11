@@ -10,9 +10,11 @@ const app = new App({
 });
 
 const addCommand = require('./cmd/add.js');
+const removeCommand = require('./cmd/remove.js');
 
 const argv = yargs(hideBin(process.argv))
   .command(addCommand)
+  .command(removeCommand)
   .demandCommand()
   .help()
   .argv;
