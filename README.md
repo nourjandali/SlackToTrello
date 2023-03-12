@@ -18,7 +18,7 @@ Slack API: ![SlackToken](https://user-images.githubusercontent.com/31695466/2244
 
 - Add Scopes in OAuth.
 
-![Scopes](https://user-images.githubusercontent.com/31695466/224452223-0773e2fe-639d-40fd-af87-935edf3bdb0e.JPG)
+![OAuthScopes](https://user-images.githubusercontent.com/31695466/224544028-1043e88a-11d8-4896-b529-87bf16ec1ded.JPG)
 
 - Deploy the app to your hosting service.
 
