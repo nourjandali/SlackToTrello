@@ -17,7 +17,7 @@ app.message(":trello:ADD", async ({ message, say }) => {
   trello.addCard(
     cardTitle,
     cardDescription,
-    "640ba599d219c4002fcf3117",
+    "640ba599d219c4002fcf3117", // replace with your list ID
     function (error, trelloCard) {
       if (error) {
         console.log("Could not add card:", error);
@@ -51,6 +51,21 @@ app.message(":trello:REMOVE", async ({ message, say }) => {
         console.log("Card not found:", cardTitle);
         say(`Card "${cardTitle}" not found.`);
       }
+    }
+  });
+});
+
+app.message(":trello:LIST", async ({ message, say }) => {
+  const listId = "640ba599d219c4002fcf3117"; // replace with your list ID
+  trello.getCardsOnList(listId, function (error, cards) {
+    if (error) {
+      console.log("Could not get cards:", error);
+      say("Could not retrieve cards.");
+    } else {
+      const cardNames = cards.map((card) => card.name);
+      const cardList = cardNames.join("\n");
+      console.log("Card List:", cardList);
+      say(`Existing Cards: \n${cardList}`);
     }
   });
 });
