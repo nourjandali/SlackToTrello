@@ -29,6 +29,32 @@ app.message(":trello:ADD", async ({ message, say }) => {
   await say(`Card "${cardTitle}" created!`);
 });
 
+app.message(":trello:REMOVE", async ({ message, say }) => {
+  const cardTitle = message.text.split('-t "')[1].split('"')[0];
+  const listId = "640ba599d219c4002fcf3117"; // replace with your list ID
+  trello.getCardsOnList(listId, function (error, cards) {
+    if (error) {
+      console.log("Could not get cards:", error);
+    } else {
+      const cardToRemove = cards.find((card) => card.name === cardTitle);
+      if (cardToRemove) {
+        trello.deleteCard(cardToRemove.id, function (error) {
+          if (error) {
+            console.log("Could not remove card:", error);
+            say(`Could not remove card "${cardTitle}".`);
+          } else {
+            console.log("Removed card:", cardTitle);
+            say(`Card "${cardTitle}" removed.`);
+          }
+        });
+      } else {
+        console.log("Card not found:", cardTitle);
+        say(`Card "${cardTitle}" not found.`);
+      }
+    }
+  });
+});
+
 (async () => {
   await app.start(process.env.PORT || 3000);
   console.log(`⚡️ Bolt app is running on port: ${process.env.PORT}`);
